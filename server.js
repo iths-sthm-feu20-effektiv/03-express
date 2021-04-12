@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 // "app" borde egentligen heta "server" men vi följer det som står i officiella dokumentationen
 
+const frontend = require('./routes/frontend.js')
+
 const PORT = 1337
 
 
@@ -16,10 +18,7 @@ app.get('/secret', (req, res) => {
 	res.send('You have found the secret route!')
 })
 
-app.get('/frontend', (req, res) => {
-	console.log('GET /frontend');
-	res.sendFile(__dirname + '/frontend/index.html')
-})
+app.use('/frontend', frontend)
 
 
 // Starts the server
