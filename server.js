@@ -4,9 +4,17 @@ const app = express()
 
 const frontend = require('./routes/frontend.js')
 const guestbook = require('./routes/guestbook.js')
+const animals = require('./routes/animals.js')
 
 const PORT = 1337
 
+
+// Middleware läggs alltid FÖRE endpoints
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+
+// Endpoints / resurser / routes
 
 // hantera resursen "web root" - request och response
 app.get('/', (req, res) => {
@@ -22,11 +30,9 @@ app.get('/secret', (req, res) => {
 // 3a Lägg till en route /guestbook som skickar texten "Du är besökare nummer 1". Antalet besökare ska räknas upp varje gång man laddar om sidan
 app.use('/guestbook', guestbook)
 
-// 3b Nu är det dags att börja organisera koden. Börja med att skapa en fristående funktion för callback-funktionen som körs för route /guestbook. (När du läst om Router modules kan du använda det.)
-// 3c Vi ska lägga all kod som har att göra med "gästboken" i en egen modul. Skapa en mapp med namnet routes. Lägg sedan funktionen i en egen fil med namnet guestbook.js och importera den i server.js.
-
-
 app.use('/frontend', frontend)
+
+app.use('/animals', animals)
 
 
 // Starts the server
