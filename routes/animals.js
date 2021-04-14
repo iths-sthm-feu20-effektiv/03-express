@@ -11,12 +11,20 @@ let fakeDb = [
 ]
 
 router.get('/', (req, res) => {
-	console.log('GET /animals/');
 	res.send(fakeDb)
 })
+router.get('/:index', (req, res) => {
+	const index = req.params.index
+	const value = fakeDb[index]
+	if( !value ) {
+		res.status(404).send('No animal, highest index is ' + (fakeDb.length - 1))
+		return
+	}
+	res.send(value)
+})
+
 
 router.post('/', (req, res) => {
-	console.log('POST /animals/', req.body);
 	// i vanliga fall får vi datan från klienten - i req-objektet
 	// let newAnimal = { species: 'kea', favoriteFood: 'rabbits' }
 
@@ -28,8 +36,6 @@ router.post('/', (req, res) => {
 })
 
 router.put('/', (req, res) => {
-	console.log('PUT /animals');
-
 	let replaceAnimal = { species: 'seagull', favoriteFood: 'fish' }
 	let lastIndex = fakeDb.length - 1
 	fakeDb[lastIndex] = replaceAnimal
@@ -38,7 +44,6 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-	console.log('DELETE /animals');
 	fakeDb = []
 	res.send('Deleted all animals')
 })

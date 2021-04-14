@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const path = require('path')
 // "app" borde egentligen heta "server" men vi följer det som står i officiella dokumentationen
 
 const frontend = require('./routes/frontend.js')
@@ -13,17 +14,24 @@ const PORT = 1337
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
+// Egen middleware som loggar information om inkommande request
+app.use((req, res, next) => {
+	console.log(`${req.method} ${req.url}`, req.params);
+	next()
+})
+
+const staticFolder = path.join(__dirname, 'frontend')
+app.use(express.static(staticFolder))
+
 
 // Endpoints / resurser / routes
 
 // hantera resursen "web root" - request och response
 app.get('/', (req, res) => {
-	console.log('GET /');
 	res.send('Yes I am here')
 })
 
 app.get('/secret', (req, res) => {
-	console.log('GET /secret');
 	res.send('You have found the secret route!')
 })
 
