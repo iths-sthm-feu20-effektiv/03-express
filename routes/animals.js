@@ -14,6 +14,16 @@ router.get('/', (req, res) => {
 	console.log('GET /animals/');
 	res.send(fakeDb)
 })
+router.get('/:index', (req, res) => {
+	console.log('GET /animals/index', req.params.index);
+	const index = Number(req.params.index)
+	const value = fakeDb[index]
+	if( !value ) {
+		res.status(404).send('No animal with that index. Highest index is ' + (fakeDb.length - 1))
+		return
+	}
+	res.send(value)
+})
 
 router.post('/', (req, res) => {
 	console.log('POST /animals/', req.body);
