@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const app = express()
 // "app" borde egentligen heta "server" men vi följer det som står i officiella dokumentationen
 
@@ -13,17 +14,26 @@ const PORT = 1337
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
+// Egen middleware funktion
+app.use((req, res, next) => {
+	// Logger - ska skriva ut information om det request som kommer
+	console.log(`${req.method} ${req.url}`, req.params);
+	next()
+})
+
+const staticFolder = path.join(__dirname, 'frontend')
+app.use( express.static(staticFolder) )
+
+
 
 // Endpoints / resurser / routes
 
 // hantera resursen "web root" - request och response
 app.get('/', (req, res) => {
-	console.log('GET /');
 	res.send('Yes I am here')
 })
 
 app.get('/secret', (req, res) => {
-	console.log('GET /secret');
 	res.send('You have found the secret route!')
 })
 
